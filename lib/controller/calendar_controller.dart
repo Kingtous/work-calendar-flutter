@@ -3,7 +3,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 enum WorkType {
   w1,
-  w2
+  w2,
+  w3
 }
 
 extension WorkTypeString on WorkType {
@@ -13,6 +14,8 @@ extension WorkTypeString on WorkType {
         return "方式1(全天、休、休、休)";
       case WorkType.w2:
         return "方式2(白、晚、休、休)";
+      case WorkType.w3:
+        return "方式3(全天、休、休)";
       default:
         return "未知";
     }
@@ -32,6 +35,8 @@ class CalendarController extends GetxController {
       workType.value = WorkType.w1;
     } else if (wType == WorkType.w2.name) {
       workType.value = WorkType.w2;
+    } else if (wType == WorkType.w3.name) {
+      workType.value = WorkType.w3;
     }
     final t = Get.find<SharedPreferences>().getInt("initialWorkTime");
     if (t == null) {
@@ -75,7 +80,13 @@ class CalendarController extends GetxController {
         else {
           return "休息！";
         }
-        break;
+      case WorkType.w3:
+        d = d %= 3;
+        if (d == 0) {
+          return "今天全天上班哦～";
+        } else {
+          return "休息！";
+        }
     }
     return "白班";
   }

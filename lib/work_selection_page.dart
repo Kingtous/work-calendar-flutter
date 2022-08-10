@@ -23,10 +23,7 @@ class _WorkSelectionPageState extends State<WorkSelectionPage> {
         children: [
           MPPicker(
             column: 1,
-            items: [
-              MPPickerItem(label: WorkType.w1.desc()),
-              MPPickerItem(label: WorkType.w2.desc()),
-            ],
+            items: WorkType.values.map((e) => MPPickerItem(label: e.desc())).toList(growable: false),
             child: Row(
               children: [
                 Expanded(child: KButton(text: "轮班机制",icon:  MPIcon(MaterialIcons.home_filled
@@ -38,6 +35,8 @@ class _WorkSelectionPageState extends State<WorkSelectionPage> {
                 c.setWorkType(WorkType.w1);
               } else if (items.first.label == WorkType.w2.desc()) {
                 c.setWorkType(WorkType.w2);
+              } else if (items.first.label == WorkType.w3.desc()) {
+                c.setWorkType(WorkType.w3);
               }
             },
           ),
