@@ -16,6 +16,9 @@ dependencies:
   mp_build_tools: "0.17.1"
   get: ^4.3.9
   shared_preferences: ^2.0.8
+  lunar:
+    path: ./lunar/lunar-flutter
+  common_utils: ^2.1.0
 dependency_overrides:
   flutter: "0.17.1"
   mpcore: "0.17.1"
