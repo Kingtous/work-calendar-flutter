@@ -78,6 +78,13 @@ packages:
       url: "https://pub.mpflutter.com"
     source: hosted
     version: "0.17.1"
+  get:
+    dependency: "direct main"
+    description:
+      name: get
+      url: "https://pub.mpflutter.com"
+    source: hosted
+    version: "4.3.9+1"
   glob:
     dependency: transitive
     description:
@@ -148,6 +155,13 @@ packages:
       url: "https://pub.mpflutter.com"
     source: hosted
     version: "1.11.1"
+  shared_preferences:
+    dependency: "direct main"
+    description:
+      name: shared_preferences
+      url: "https://pub.mpflutter.com"
+    source: hosted
+    version: "2.0.8"
   source_span:
     dependency: transitive
     description:

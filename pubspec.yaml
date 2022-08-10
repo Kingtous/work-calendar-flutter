@@ -1,4 +1,4 @@
-name: mpflutter_template
+name: work_calendar
 description: A new MPFlutter project.
 publish_to: "none"
 version: 1.0.0+1
@@ -14,6 +14,8 @@ dependencies:
   flutter_web_plugins: "0.17.1"
   mpcore: "0.17.1"
   mp_build_tools: "0.17.1"
+  get: ^4.3.9
+  shared_preferences: ^2.0.8
 dependency_overrides:
   flutter: "0.17.1"
   mpcore: "0.17.1"

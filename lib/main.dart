@@ -1,8 +1,13 @@
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 import 'package:mpcore/mpcore.dart';
-import 'package:mpflutter_template/second_page.dart';
+import 'package:work_calendar/component/calendar.dart';
+import 'package:work_calendar/controller/calendar_controller.dart';
+import 'package:work_calendar/me.dart';
+import 'package:work_calendar/work_selection_page.dart';
 
 void main() {
+  Get.lazyPut(() => CalendarController());
   runApp(MyApp());
   MPCore().connectToHostChannel();
 }
@@ -10,12 +15,12 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MPApp(
-      title: 'MPFlutter Demo',
+    return GetMPApp(
+      title: '工作日历',
       color: Colors.blue,
       routes: {
         '/': (context) => MyHomePage(),
-        '/second': (context) => MySecondPage(),
+        '/work_selection': (context) => WorkSelectionPage(),
       },
       navigatorObservers: [MPCore.getNavigationObserver()],
     );
@@ -25,30 +30,60 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MPScaffold(
-      name: 'Template',
-      body: Center(
-        child: GestureDetector(
-          onTap: () {
-            Navigator.of(context).pushNamed('/second');
-          },
-          child: Container(
-            width: 200,
-            height: 200,
-            color: Colors.blue,
-            child: Center(
-              child: Text(
-                'Hello, MPFlutter!',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-            ),
+    return MPMainTabView(
+      loadingBuilder: (context) => MPCircularProgressIndicator(),
+      keepAlive: true,
+      tabs: [
+        MPMainTabItem(
+            activeTabWidget: Container(
+                width: 44,
+                height: 44,
+                child: renderIcon(
+                  icon: MaterialIcons.calendar_today,
+                  title: '日历',
+                  actived: true,
+                )),
+            inactiveTabWidget: Container( width: 44,
+                height: 44,child: renderIcon(
+                  icon: MaterialIcons.calendar_today,
+                  title: '日历',
+                  actived: false,
+                )),
+            builder: (context) => Calendar()),
+        MPMainTabItem(
+            activeTabWidget: Container( width: 44,
+                height: 44,child: renderIcon(
+                  icon: MaterialIcons.home,
+                  title: '我的',
+                  actived: true,
+                )),
+            inactiveTabWidget: Container( width: 44,
+                height: 44,child: renderIcon(
+                  icon: MaterialIcons.home,
+                  title: '我的',
+                  actived: false,
+                )),
+            builder: (context) => MePage())
+      ],
+    );
+  }
+
+  Widget renderIcon({
+    required String icon,
+    required String title,
+    required bool actived,
+  }) {
+    return Column(
+      children: [
+        MPIcon(icon, color: actived ? Colors.blue : Colors.grey),
+        Text(
+          title,
+          style: TextStyle(
+            fontSize: 12,
+            color: actived ? Colors.blue : Colors.grey,
           ),
         ),
-      ),
+      ],
     );
   }
 }
