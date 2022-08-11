@@ -6,14 +6,9 @@ import 'package:work_calendar/component/button.dart';
 
 import 'controller/calendar_controller.dart';
 
-class WorkSelectionPage extends StatefulWidget {
+class WorkSelectionPage extends StatelessWidget {
   const WorkSelectionPage({Key? key}) : super(key: key);
 
-  @override
-  State<WorkSelectionPage> createState() => _WorkSelectionPageState();
-}
-
-class _WorkSelectionPageState extends State<WorkSelectionPage> {
   @override
   Widget build(BuildContext context) {
     final c = Get.find<CalendarController>();
@@ -59,6 +54,5 @@ class _WorkSelectionPageState extends State<WorkSelectionPage> {
       ).marginSymmetric(horizontal: 8.0),
     );
   }
-
 
 }

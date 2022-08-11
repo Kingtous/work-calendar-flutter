@@ -7,7 +7,12 @@ import 'package:work_calendar/controller/calendar_controller.dart';
 import 'package:work_calendar/me.dart';
 import 'package:work_calendar/work_selection_page.dart';
 
+late Future<String?> f;
+bool notified = false;
+
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  f = initTools();
   runApp(MyApp());
   MPCore().connectToHostChannel();
 }
@@ -23,19 +28,46 @@ class MyApp extends StatelessWidget {
         '/work_selection': (context) => WorkSelectionPage(),
       },
       navigatorObservers: [MPCore.getNavigationObserver()],
+      initialRoute: "/",
+      home: MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatelessWidget {
+
+  void checkWorker() async {
+    if (notified) {
+      return;
+    }
+    notified = true;
+    final sp = Get.find<SharedPreferences>();
+    if (sp.getString("initialWorkTime") == null) {
+      await MPWebDialogs.alert(message: "还未配置工作日历哦，请前往\"我的\"页面配置");
+      // Future.delayed(Duration.zero, () {
+      //   // 跳转至登录
+      //   Get.toNamed('/work_selection');
+      // });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: initTools(),
+      future: f,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
+          Future.delayed(Duration.zero, () {
+            checkWorker();
+          });
           return MPMainTabView(
-            loadingBuilder: (context) => MPCircularProgressIndicator(),
+            loadingBuilder: (context) => Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                MPCircularProgressIndicator(),
+                Text("快马加鞭加载中..."),
+              ],
+            ),
             keepAlive: true,
             tabs: [
               MPMainTabItem(

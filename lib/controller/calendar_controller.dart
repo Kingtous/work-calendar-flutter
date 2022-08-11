@@ -98,7 +98,6 @@ SharedPreferences? _sp;
 Future<String?> initTools() async {
   print("loading tools");
   if (_sp != null) {
-    print("done");
     return "ok";
   }
   _sp = await SharedPreferences.getInstance();

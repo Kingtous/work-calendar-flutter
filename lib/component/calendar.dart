@@ -8,15 +8,10 @@ import 'package:mpcore/mpcore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:work_calendar/controller/calendar_controller.dart';
 
-class Calendar extends StatefulWidget {
+class Calendar extends StatelessWidget {
   const Calendar({Key? key}) : super(key: key);
 
-  @override
-  State<Calendar> createState() => _CalendarState();
-}
-
-class _CalendarState extends State<Calendar> {
-  late CalendarController controller;
+  CalendarController get controller => Get.find<CalendarController>();
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +24,9 @@ class _CalendarState extends State<Calendar> {
               children: [
                 Expanded(
                   child: Obx(() => Text(
-                        "${controller.selectedDate.value.year}年${controller.selectedDate.value.month}月${controller.selectedDate.value.day}月",
-                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                      )),
+                    "${controller.selectedDate.value.year}年${controller.selectedDate.value.month}月${controller.selectedDate.value.day}月",
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  )),
                 ),
                 MPDatePicker(
                     headerText: "请输入要查询的日期",
@@ -43,7 +38,7 @@ class _CalendarState extends State<Calendar> {
                     },
                     child: Container(
                       decoration: BoxDecoration(
-                        border: Border.all()
+                          border: Border.all()
                       ),
                       padding: EdgeInsets.symmetric(horizontal: 8.0),
                       child: Text(
@@ -77,26 +72,6 @@ class _CalendarState extends State<Calendar> {
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
-    controller = Get.find<CalendarController>();
-    checkWorker();
-  }
-
-  void checkWorker() async {
-    final sp = Get.find<SharedPreferences>();
-    if (sp.getString("initialWorkTime") == null) {
-      await MPWebDialogs.alert(message: "还未配置工作日历哦，请前往\"我的\"页面配置");
-      // Future.delayed(Duration.zero, () {
-      //   // 跳转至登录
-      //   Get.toNamed('/work_selection');
-      // });
-    } else {
-      loadWorkOrder();
-    }
-  }
-
   void changeDate(DateTime dt) {
     controller.selectedDate.value = dt;
   }
@@ -105,7 +80,7 @@ class _CalendarState extends State<Calendar> {
     return Row(
       children: [
         Obx(()=> Text("${controller.getWorkStatusToday(controller.selectedDate.value)}",
-        style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 24),
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 24),
         ))
       ],
     );
@@ -115,7 +90,7 @@ class _CalendarState extends State<Calendar> {
     return Row(
       children: [
         Expanded(child: Obx(()=> Text("${Lunar.fromDate(controller.selectedDate.value).toFullString()}", softWrap: true,
-        style: TextStyle(color: Colors.grey),
+          style: TextStyle(color: Colors.grey),
         )))
       ],
     ).paddingSymmetric(vertical: 4.0);
@@ -124,7 +99,7 @@ class _CalendarState extends State<Calendar> {
   Widget buildCalendar() {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all()
+          border: Border.all()
       ),
       child: Obx(()=> GridView.count(crossAxisCount: 7, shrinkWrap: true, children: buildItems(controller.selectedDate.value),)),
     );
@@ -132,13 +107,14 @@ class _CalendarState extends State<Calendar> {
 
   buildItem(String text, {bool active = false,Function()? onTap, }) {
     return GestureDetector(
+      key: ValueKey(text),
       onTap: onTap,
       child: Container(
-        alignment: Alignment.center,
+          alignment: Alignment.center,
           decoration: BoxDecoration(
             // shape: BoxShape.circle,
-            color: active ? Colors.grey : Colors.white,
-            borderRadius: BorderRadius.circular(50)
+              color: active ? Colors.grey : Colors.white,
+              borderRadius: BorderRadius.circular(50)
           ),
           child: Text(text, textAlign: TextAlign.center,)),
     );
@@ -169,7 +145,7 @@ class _CalendarState extends State<Calendar> {
       if (dt.month == 2) {
         day = isLeapYear ? 29 : 28;
       } else
-      day = 30;
+        day = 30;
     }
     for(var i = 1; i<=day; i++) {
       final iDt = DateTime(dt.year, dt.month, i);
