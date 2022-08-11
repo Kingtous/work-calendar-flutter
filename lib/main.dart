@@ -22,13 +22,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMPApp(
       title: '工作日历',
-      color: Colors.blue,
+      color: Colors.black,
       routes: {
         '/': (context) => MyHomePage(),
         '/work_selection': (context) => WorkSelectionPage(),
       },
       navigatorObservers: [MPCore.getNavigationObserver()],
       initialRoute: "/",
+      unknownRoute: GetPage(name: '/fallback', page: () =>MyHomePage()),
       home: MyHomePage(),
     );
   }
