@@ -13,6 +13,7 @@ class WorkSelectionPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = Get.find<CalendarController>();
     return MPScaffold(
+      backgroundColor: Colors.white,
       name: "工作日历配置",
       body: Column(
         children: [

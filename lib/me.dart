@@ -9,6 +9,7 @@ class MePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MPScaffold(
+      backgroundColor: Colors.white,
       name: "我的",
       body: Column(
         children: [

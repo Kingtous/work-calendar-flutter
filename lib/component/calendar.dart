@@ -16,6 +16,7 @@ class Calendar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MPScaffold(
+      backgroundColor: Colors.white,
       name: "工作日历",
       body: SingleChildScrollView(
         child: Column(
