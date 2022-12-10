@@ -1,0 +1,20 @@
+.loading-css {
+    align-self: center;
+    width: 50px; /*先将loading区域变成正方形*/
+    height: 50px;
+    display: inline-block; /*将loading区域变成行内元素，防止旋转的时候，100%宽度都在旋转*/
+    border: 3px solid #f3f3f3; /*设置四周边框大小，并将颜色设置为浅白色*/
+    border-top: 3px solid black; /*将上边框颜色设置为红色高亮，以便旋转的时候能够看到旋转的效果*/
+    border-radius: 50%; /*将边框和内容区域都变成圆形*/
+}
+
+.loading {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+}
