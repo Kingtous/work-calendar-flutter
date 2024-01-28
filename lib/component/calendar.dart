@@ -1,15 +1,15 @@
+import 'package:bruno/bruno.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lunar/lunar.dart';
-import 'package:mpcore/mpcore.dart';
 import 'package:work_calendar/controller/calendar_controller.dart';
 
 class Calendar extends StatelessWidget {
-  const Calendar({Key? key}) : super(key: key);
+  Calendar({Key? key}) : super(key: key);
 
   CalendarController get controller => Get.find<CalendarController>();
-
+  final ScrollController _scrollController = ScrollController();
   _switchToNextMonth() {
     final dt = controller.selectedDate.value;
     final newDate;
@@ -34,28 +34,38 @@ class Calendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MPScaffold(
+    return Scaffold(
       backgroundColor: Colors.white,
-      name: "工作日历",
+      // name: "工作日历",
       body: SingleChildScrollView(
+        controller: _scrollController,
         child: Column(
           children: [
             Row(
               children: [
                 Expanded(
                   child: Obx(() => Text(
-                        "${controller.selectedDate.value.year}年${controller.selectedDate.value.month}月${controller.selectedDate.value.day}月",
+                        "${controller.selectedDate.value.year}年${controller.selectedDate.value.month}月${controller.selectedDate.value.day}日",
                         style: TextStyle(
                             fontSize: 14, fontWeight: FontWeight.bold),
                       )),
                 ),
-                MPDatePicker(
-                    headerText: "请输入要查询的日期",
-                    start: DateTime(2000, 01, 01),
-                    end: DateTime(2099, 01, 01),
-                    defaultValue: DateTime.now(),
-                    onResult: (dt) {
-                      changeDate(dt);
+                GestureDetector(
+                    // headerText: "请输入要查询的日期",
+                    // start: DateTime(2000, 01, 01),
+                    // end: DateTime(2099, 01, 01),
+                    // defaultValue: DateTime.now(),
+                    // onResult: (dt) {
+                    //   changeDate(dt);
+                    // },
+                    onTap: () {
+                      BrnDatePicker.showDatePicker(context,
+                          initialDateTime: DateTime.now(),
+                          minDateTime: DateTime(2000, 01, 01),
+                          maxDateTime: DateTime(2099, 01, 01),
+                          onConfirm: (dt, list) {
+                        changeDate(dt);
+                      });
                     },
                     child: Container(
                       decoration: BoxDecoration(border: Border.all()),
@@ -119,17 +129,48 @@ class Calendar extends StatelessWidget {
         ),
         Row(
           children: [
+            // Expanded(
+            //     child: Obx(() => Text(
+            //           "${Lunar.fromDate(controller.selectedDate.value).toFullString().replaceAll(" ", "\n")}",
+            //           softWrap: true,
+            //           style: TextStyle(
+            //               color: Colors.grey,
+            //               fontSize: 14,
+            //               height: 1.5,
+            //               wordSpacing: 1.5,
+            //               letterSpacing: 1.5),
+            //         )))
             Expanded(
-                child: Obx(() => Text(
-                      "${Lunar.fromDate(controller.selectedDate.value).toFullString().replaceAll(" ", "\n")}",
-                      softWrap: true,
-                      style: TextStyle(
-                          color: Colors.grey,
-                          fontSize: 14,
-                          height: 1.5,
-                          wordSpacing: 1.5,
-                          letterSpacing: 1.5),
-                    )))
+                child: Obx(
+              () => GridView.count(
+                  controller: _scrollController,
+                  shrinkWrap: true,
+                  childAspectRatio: 4,
+                  crossAxisCount: 2,
+                  children: Lunar.fromDate(controller.selectedDate.value)
+                      .toFullString()
+                      .split(' ')
+                      .map((e) => Container(
+                          alignment: Alignment.center,
+                          margin: EdgeInsets.all(4.0),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12.0),
+                              gradient: LinearGradient(colors: [
+                                Colors.black87,
+                                Colors.grey,
+                                Colors.grey.withAlpha(150)
+                              ])),
+                          child: Text(
+                            e,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            textAlign: TextAlign.center,
+                          )))
+                      .toList()),
+            ))
           ],
         ).paddingSymmetric(vertical: 4.0),
       ],
@@ -140,6 +181,7 @@ class Calendar extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(border: Border.all()),
       child: Obx(() => GridView.count(
+            controller: _scrollController,
             crossAxisCount: 7,
             shrinkWrap: true,
             children: buildItems(controller.selectedDate.value),
@@ -219,7 +261,7 @@ class Calendar extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                MPIcon(MaterialIcons.arrow_left_outlined),
+                Icon(Icons.arrow_left_outlined),
                 Text(
                   "上个月",
                   style: TextStyle(fontSize: 16, color: Colors.black87),
@@ -258,7 +300,7 @@ class Calendar extends StatelessWidget {
                   "下个月",
                   style: TextStyle(fontSize: 16, color: Colors.black87),
                 ),
-                MPIcon(MaterialIcons.arrow_right_outlined),
+                Icon(Icons.arrow_right_outlined),
               ],
             ),
           ),
