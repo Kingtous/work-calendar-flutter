@@ -1,11 +1,7 @@
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-enum WorkType {
-  w1,
-  w2,
-  w3
-}
+enum WorkType { w1, w2, w3 }
 
 extension WorkTypeString on WorkType {
   String desc() {
@@ -54,7 +50,8 @@ class CalendarController extends GetxController {
 
   void setWorkTime(DateTime dt) {
     initialWorkTime.value = dt;
-    Get.find<SharedPreferences>().setInt("initialWorkTime", dt.millisecondsSinceEpoch);
+    Get.find<SharedPreferences>()
+        .setInt("initialWorkTime", dt.millisecondsSinceEpoch);
   }
 
   String getWorkStatusToday(DateTime value) {
@@ -76,8 +73,7 @@ class CalendarController extends GetxController {
           return "白班";
         } else if (d == 1) {
           return "晚班";
-        }
-        else {
+        } else {
           return "休息！";
         }
       case WorkType.w3:
@@ -90,7 +86,6 @@ class CalendarController extends GetxController {
     }
     return "白班";
   }
-
 }
 
 SharedPreferences? _sp;
