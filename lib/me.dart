@@ -1,61 +1,64 @@
 import 'package:bruno/bruno.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:mpflutter_wechat_api/mpflutter_wechat_api.dart';
 import 'package:work_calendar/component/button.dart';
+import 'package:work_calendar/utils/safe_area.dart';
 
 class MePage extends StatelessWidget {
   const MePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      // appBar: BrnAppBar(),
-      // name: "我的",
-      body: Column(
-        children: [
-          Expanded(
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Row(
-                  //   crossAxisAlignment: CrossAxisAlignment.end,
-                  //   children: [
-                  //     Text("轮班工作日历", style: TextStyle(
-                  //       fontSize: 30,
-                  //       fontWeight: FontWeight.bold,
-                  //     )),
-                  //   ],
-                  // ),
-                  // Divider(),
-                  Expanded(child: buildMenu(context)),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Column(
-                        children: [
-                          Text(
-                            '浪韬沙网络科技工作室™ ${DateTime.now().year}',
-                            style:
-                                TextStyle(color: Colors.grey, fontSize: 12.0),
-                          ),
-                          Text(
-                            '由MPFlutter 2.0强力驱动',
-                            style:
-                                TextStyle(color: Colors.grey, fontSize: 10.0),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 8.0,
-                  ),
-                ]).marginSymmetric(horizontal: 8.0, vertical: 4.0),
-          ),
-        ],
+    return Padding(
+      padding: EdgeInsets.only(top: safeHeight()),
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        // appBar: BrnAppBar(),
+        // name: "我的",
+        body: Column(
+          children: [
+            Expanded(
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Row(
+                    //   crossAxisAlignment: CrossAxisAlignment.end,
+                    //   children: [
+                    //     Text("轮班工作日历", style: TextStyle(
+                    //       fontSize: 30,
+                    //       fontWeight: FontWeight.bold,
+                    //     )),
+                    //   ],
+                    // ),
+                    // Divider(),
+                    Expanded(child: buildMenu(context)),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Column(
+                          children: [
+                            Text(
+                              '浪韬沙网络科技工作室™ ${DateTime.now().year}',
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 12.0),
+                            ),
+                            Text(
+                              '由MPFlutter 2.0强力驱动',
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 10.0),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 8.0,
+                    ),
+                  ]).marginSymmetric(horizontal: 8.0, vertical: 4.0),
+            ),
+          ],
+        ),
       ),
     );
   }

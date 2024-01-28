@@ -2,11 +2,12 @@ import 'package:bruno/bruno.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:mpflutter_wechat_api/mpflutter_wechat_api.dart';
+import 'package:mpflutter_wechat_api/mpflutter_wechat_api.dart' hide SafeArea;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:work_calendar/component/calendar.dart';
 import 'package:work_calendar/main.dart';
 import 'package:work_calendar/me.dart';
+import 'package:work_calendar/utils/safe_area.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -42,116 +43,119 @@ class _MyHomePageState extends State<MyHomePage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: BrnAppBar(
-        leading: Offstage(),
-        title: '轮班工作日历',
-      ),
-      body: FutureBuilder(
-        future: f,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return Column(
-              children: [
-                Expanded(
-                  child: TabBarView(
-                    controller: _tabController,
-                    // loadingBuilder: (context) => Column(
-                    //   mainAxisAlignment: MainAxisAlignment.center,
-                    //   children: [
-                    //     BrnLoadingDialog(),
-                    //     Text("快马加鞭加载中..."),
-                    //   ],
-                    // ),
-                    // keepAlive: true,
-                    children: [
-                      Calendar(),
-                      MePage(),
-                      // MPMainTabItem(
-                      //     activeTabWidget: Container(
-                      //         width: 44,
-                      //         height: 44,
-                      //         child: renderIcon(
-                      //           icon: Icons.calendar_today,
-                      //           title: '日历',
-                      //           actived: true,
-                      //         )),
-                      //     inactiveTabWidget: Container(
-                      //         width: 44,
-                      //         height: 44,
-                      //         child: renderIcon(
-                      //           icon: Icons.calendar_today,
-                      //           title: '日历',
-                      //           actived: false,
-                      //         )),
-                      //     builder: (context) => Calendar()),
-                      // MPMainTabItem(
-                      //     activeTabWidget: Container(
-                      //         width: 44,
-                      //         height: 44,
-                      //         child: renderIcon(
-                      //           icon: Icons.home,
-                      //           title: '我的',
-                      //           actived: true,
-                      //         )),
-                      //     inactiveTabWidget: Container(
-                      //         width: 44,
-                      //         height: 44,
-                      //         child: renderIcon(
-                      //           icon: Icons.home,
-                      //           title: '我的',
-                      //           actived: false,
-                      //         )),
-                      //     builder: (context) => MePage())
-                    ],
+    return Padding(
+      padding: EdgeInsets.only(top: safeHeight()),
+      child: Scaffold(
+        appBar: BrnAppBar(
+          leading: Offstage(),
+          title: '轮班工作日历',
+        ),
+        body: FutureBuilder(
+          future: f,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return Column(
+                children: [
+                  Expanded(
+                    child: TabBarView(
+                      controller: _tabController,
+                      // loadingBuilder: (context) => Column(
+                      //   mainAxisAlignment: MainAxisAlignment.center,
+                      //   children: [
+                      //     BrnLoadingDialog(),
+                      //     Text("快马加鞭加载中..."),
+                      //   ],
+                      // ),
+                      // keepAlive: true,
+                      children: [
+                        Calendar(),
+                        MePage(),
+                        // MPMainTabItem(
+                        //     activeTabWidget: Container(
+                        //         width: 44,
+                        //         height: 44,
+                        //         child: renderIcon(
+                        //           icon: Icons.calendar_today,
+                        //           title: '日历',
+                        //           actived: true,
+                        //         )),
+                        //     inactiveTabWidget: Container(
+                        //         width: 44,
+                        //         height: 44,
+                        //         child: renderIcon(
+                        //           icon: Icons.calendar_today,
+                        //           title: '日历',
+                        //           actived: false,
+                        //         )),
+                        //     builder: (context) => Calendar()),
+                        // MPMainTabItem(
+                        //     activeTabWidget: Container(
+                        //         width: 44,
+                        //         height: 44,
+                        //         child: renderIcon(
+                        //           icon: Icons.home,
+                        //           title: '我的',
+                        //           actived: true,
+                        //         )),
+                        //     inactiveTabWidget: Container(
+                        //         width: 44,
+                        //         height: 44,
+                        //         child: renderIcon(
+                        //           icon: Icons.home,
+                        //           title: '我的',
+                        //           actived: false,
+                        //         )),
+                        //     builder: (context) => MePage())
+                      ],
+                    ),
                   ),
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _tabController.animateTo(0);
-                          });
-                        },
-                        child: Container(
-                            width: 44,
-                            height: 44,
-                            child: renderIcon(
-                              icon: Icons.calendar_today,
-                              title: '日历',
-                              actived: _tabController.index == 0,
-                            )),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _tabController.animateTo(1);
-                          });
-                        },
-                        child: Container(
-                            width: 44,
-                            height: 44,
-                            child: renderIcon(
-                              icon: Icons.home,
-                              title: '我的',
-                              actived: _tabController.index == 1,
-                            )),
-                      )
-                    ],
-                  ),
-                )
-              ],
-            );
-          } else {
-            return Center(child: BrnLoadingDialog());
-          }
-        },
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _tabController.animateTo(0);
+                            });
+                          },
+                          child: Container(
+                              width: 44,
+                              height: 44,
+                              child: renderIcon(
+                                icon: Icons.calendar_today,
+                                title: '日历',
+                                actived: _tabController.index == 0,
+                              )),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _tabController.animateTo(1);
+                            });
+                          },
+                          child: Container(
+                              width: 44,
+                              height: 44,
+                              child: renderIcon(
+                                icon: Icons.home,
+                                title: '我的',
+                                actived: _tabController.index == 1,
+                              )),
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              );
+            } else {
+              return Center(child: BrnLoadingDialog());
+            }
+          },
+        ),
       ),
     );
   }
